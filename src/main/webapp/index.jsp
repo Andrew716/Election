@@ -14,11 +14,8 @@
 </head>
 <body>
 
-<%
-  CreateDataSource.doCreationDataSource();
-%>
 <center>
-  <form action="ReadFromJSPServlet" method="get">
+  <form action="ReadFromJSP" method="post">
     <b>Welcome to Election program!</b>
 
 
@@ -32,7 +29,7 @@
     <input type="checkbox" value="candidate" name="candidate_checkBox">Я кандидат<Br>
     <input type="checkbox" value="voter" name="voter_checkBox">Я виборець<Br>
     <p></p>
-    <input type="submit" value="Підтвердити">
+    <input type="submit" value="submitAccepted" name="buttonSubmit">
 
 
   </form>
