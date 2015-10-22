@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
+import java.sql.Connection;
 import java.util.logging.Logger;
 
 /**
@@ -15,6 +16,7 @@ import java.util.logging.Logger;
 public class ReadFromJSP extends javax.servlet.http.HttpServlet {
 
     private final Logger LOGGER = Logger.getLogger("Info logging");
+    private Connection connection;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response){
         LOGGER.info("Method processRequest has been started");
@@ -25,10 +27,10 @@ public class ReadFromJSP extends javax.servlet.http.HttpServlet {
         String fathersName = (String) request.getParameter("fathers_name");
         if (request.getParameter("buttonSubmit") != null){
             if (voterName != null && name != null && surname != null && fathersName != null){
-                AddToDataBase.addToDataBase(name, surname, fathersName, true, false);
+                AddToDataBase.addToDataBase(connection, name, surname, fathersName, true, false);
             }
             if (candidateName != null && name != null && surname != null && fathersName != null){
-                AddToDataBase.addToDataBase(name, surname, fathersName, false, true);
+                AddToDataBase.addToDataBase(connection, name, surname, fathersName, false, true);
             }
         }
     }
@@ -36,7 +38,7 @@ public class ReadFromJSP extends javax.servlet.http.HttpServlet {
     @Override
     protected void doPost(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException {
         if (request.getParameter("buttonSubmit") != null){
-            CreateDataSource.doCreationDataSource();
+            this.connection = CreateDataSource.doCreationDataSource();
             processRequest(request,response);
         }
     }
