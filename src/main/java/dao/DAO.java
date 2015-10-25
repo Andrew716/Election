@@ -1,11 +1,14 @@
 package dao;
 
+import entities.Person;
+
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -23,26 +26,24 @@ public class DAO {
             DataSource source = (DataSource) initialContext.lookup("java:/comp/env/ElectionDataSource");
             connection = source.getConnection();
         } catch (NamingException e) {
-            LOGGER.info("Connection failed");
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
         } catch (SQLException e) {
-            LOGGER.info("Connection failed");
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
         LOGGER.info("DataSource has been generated");
     }
 
-    public static void addPerson(String surname, String name, String fathersName, boolean flagForVoter, boolean flagForCandidate){
+    public static void addPerson(Person person, boolean flagForVoter, boolean flagForCandidate){
         LOGGER.info("Method addPerson has been started");
         Statement statement = null;
         try {
             statement = connection.createStatement();
         } catch (SQLException e) {
-            LOGGER.info("SQLException has been generated");
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
         try {
-            String insertQueryForVoter = "INSERT INTO voter VALUES ("+ "'"+ surname+"'" + "," +"'"+ name + "'"+"," +"'"+ fathersName+"'" + ")";
-            String insertQueryForCandidate = "INSERT INTO candidate VALUES ("+ "'"+ surname+"'" + "," +"'"+ name + "'"+"," +"'"+ fathersName+"'" + ")";
+            String insertQueryForVoter = "INSERT INTO voter VALUES ("+ "'"+ person.getSurname()+"'" + "," +"'"+ person.getName()+ "'"+"," +"'"+ person.getFathersName()+"'" + ")";
+            String insertQueryForCandidate = "INSERT INTO candidate VALUES ("+ "'"+ person.getSurname()+"'" + "," +"'"+ person.getName()+ "'"+"," +"'"+ person.getFathersName()+"'" + ")";
             if (flagForVoter){
                 statement.executeUpdate(insertQueryForVoter);
             }
@@ -50,8 +51,7 @@ public class DAO {
                 statement.executeUpdate(insertQueryForCandidate);
             }
         } catch (SQLException e) {
-            LOGGER.info("Insert failed");
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
     }
 }

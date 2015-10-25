@@ -8,6 +8,12 @@ public class Person {
     private String surname;
     private String fathersName;
 
+    public Person(String name, String surname, String fathersName) {
+        this.name = name;
+        this.surname = surname;
+        this.fathersName = fathersName;
+    }
+
     public String getName() {
         return name;
     }

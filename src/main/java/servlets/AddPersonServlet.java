@@ -22,16 +22,13 @@ public class AddPersonServlet extends javax.servlet.http.HttpServlet {
         LOGGER.info("Method processRequest has been started");
         this.voterName = request.getParameter("voter_checkBox");
         this.candidateName = request.getParameter("candidate_checkBox");
-        Person person = new Person();
-        person.setName(request.getParameter("Name"));
-        person.setSurname(request.getParameter("Surname"));
-        person.setFathersName(request.getParameter("Fathers_name"));
+        Person person = new Person(request.getParameter("Name"),request.getParameter("Surname"), request.getParameter("Fathers_name"));
         if (request.getParameter("buttonSubmit") != null){
             if (voterName != null && person.getName() != null && person.getSurname() != null && person.getFathersName() != null){
-                DAO.addPerson(person.getName(), person.getSurname(), person.getFathersName(), true, false);
+                DAO.addPerson(person, true, false);
             }
             if (candidateName != null && person.getName() != null && person.getSurname() != null && person.getFathersName() != null){
-                DAO.addPerson(person.getName(), person.getSurname(), person.getFathersName(), false, true);
+                DAO.addPerson(person, false, true);
             }
         }
     }
