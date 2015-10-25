@@ -1,0 +1,11 @@
+<Context>
+    <Resource name="ElectionDataSource" auth="andrii"
+              type="javax.sql.DataSource"
+              maxActive="100"
+              maxIdle="30"
+              username="postgres"
+              password="234786"
+              driverClassName="org.postgresql.Driver"
+              url="jdbc:postgresql://localhost:5432/ElectionDB"
+              maxWait="-1"/>
+</Context>

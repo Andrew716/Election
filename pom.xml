@@ -7,6 +7,7 @@
     <groupId>com.Andrii.1.1.</groupId>
     <artifactId>ElectionProject</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>war</packaging>
     <dependencies>
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -14,7 +15,7 @@
             <version>3.1.0</version>
         </dependency>
     </dependencies>
-    <packaging>war</packaging>
+
 
 
 </project>

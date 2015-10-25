@@ -14,21 +14,21 @@
 <body>
 
 <center>
-  <form action="ReadFromJSP" method="post">
+  <form action="AddPersonServlet" method="post">
     <b>Welcome to Election program!</b>
 
 
     <p></p>
-    <input type="text" name="Surname" value="">Прізвище<Br>
+    <input type="text" name="Surname" >Прізвище<Br>
     <p></p>
     <input type="text" name="Name">Ім'я<Br>
     <p></p>
     <input type="text" name="Fathers_name">По батькові<Br>
     <p></p>
-    <input type="checkbox" value="candidate" name="candidate_checkBox">Я кандидат<Br>
-    <input type="checkbox" value="voter" name="voter_checkBox">Я виборець<Br>
+    <input type="checkbox"  name="candidate_checkBox">Я кандидат<Br>
+    <input type="checkbox"  name="voter_checkBox">Я виборець<Br>
     <p></p>
-    <input type="submit" value="submitAccepted" name="buttonSubmit">
+    <input type="submit"  name="buttonSubmit">
 
 
   </form>
