@@ -14,8 +14,25 @@ import java.util.logging.Logger;
 public class DAO {
 
     private final static Logger LOGGER = Logger.getLogger("Info logging");
+    private static Connection connection;
 
-    public static void addPerson(Connection connection, String surname, String name, String fathersName, boolean flagForVoter, boolean flagForCandidate){
+    static {
+        LOGGER.info("Method getConnection has been started");
+        try {
+            InitialContext initialContext = new InitialContext();
+            DataSource source = (DataSource) initialContext.lookup("java:/comp/env/ElectionDataSource");
+            connection = source.getConnection();
+        } catch (NamingException e) {
+            LOGGER.info("Connection failed");
+            e.printStackTrace();
+        } catch (SQLException e) {
+            LOGGER.info("Connection failed");
+            e.printStackTrace();
+        }
+        LOGGER.info("DataSource has been generated");
+    }
+
+    public static void addPerson(String surname, String name, String fathersName, boolean flagForVoter, boolean flagForCandidate){
         LOGGER.info("Method addPerson has been started");
         Statement statement = null;
         try {
@@ -25,9 +42,7 @@ public class DAO {
         }
         try {
             String insertQueryForVoter = "INSERT INTO voter VALUES ("+ "'"+ surname+"'" + "," +"'"+ name + "'"+"," +"'"+ fathersName+"'" + ")";
-            LOGGER.info(insertQueryForVoter);
             String insertQueryForCandidate = "INSERT INTO candidate VALUES ("+ "'"+ surname+"'" + "," +"'"+ name + "'"+"," +"'"+ fathersName+"'" + ")";
-            LOGGER.info(insertQueryForCandidate);
             if (flagForVoter){
                 statement.executeUpdate(insertQueryForVoter);
             }
@@ -35,23 +50,8 @@ public class DAO {
                 statement.executeUpdate(insertQueryForCandidate);
             }
         } catch (SQLException e) {
-            LOGGER.info(e.getMessage());
+            LOGGER.info("Insert failed");
+            e.printStackTrace();
         }
-    }
-
-    public static Connection getConnection(){
-        LOGGER.info("Method getConnection has been started");
-        Connection connection = null;
-        try {
-            InitialContext initialContext = new InitialContext();
-            DataSource source = (DataSource) initialContext.lookup("java:/comp/env/ElectionDataSource");
-            connection = source.getConnection();
-        } catch (NamingException e) {
-            LOGGER.info("Naming Exception has been generated");
-        } catch (SQLException e) {
-            LOGGER.info("SQLException has been generated");
-        }
-        LOGGER.info("DataSource has been generated");
-        return connection;
     }
 }
