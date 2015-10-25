@@ -26,9 +26,9 @@ public class DAO {
             DataSource source = (DataSource) initialContext.lookup("java:/comp/env/ElectionDataSource");
             connection = source.getConnection();
         } catch (NamingException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.SEVERE, "Connection failed InitialContext", e);
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.SEVERE, "Connection failed DataSource", e);
         }
         LOGGER.info("DataSource has been generated");
     }
@@ -39,7 +39,7 @@ public class DAO {
         try {
             statement = connection.createStatement();
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.SEVERE, "Connection failed in method addPerson", e);
         }
         try {
             String insertQueryForVoter = "INSERT INTO voter VALUES ("+ "'"+ person.getSurname()+"'" + "," +"'"+ person.getName()+ "'"+"," +"'"+ person.getFathersName()+"'" + ")";
@@ -51,7 +51,7 @@ public class DAO {
                 statement.executeUpdate(insertQueryForCandidate);
             }
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.SEVERE, "Insert failed", e);
         }
     }
 }
