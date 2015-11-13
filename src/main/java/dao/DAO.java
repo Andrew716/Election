@@ -43,7 +43,6 @@ public class DAO {
             statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next()){
-                LOGGER.info("voterSer method is working properly");
                 Person person = new Person();
                 person.setName(resultSet.getString("name"));
                 person.setSurname(resultSet.getString("surname"));

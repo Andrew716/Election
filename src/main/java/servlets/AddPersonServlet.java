@@ -30,7 +30,13 @@ public class AddPersonServlet extends HttpServlet {
         this.confirmPassword = request.getParameter("PasswordConfirm");
         Person person = new Person(request.getParameter("Name"),request.getParameter("Surname"), request.getParameter("Fathers_name"), request.getParameter("Password"));
         if (request.getParameter("vote") != null){
-            checkMatch(request, response);
+            try {
+                request.getRequestDispatcher("matchPage.jsp").include(request, response);
+            } catch (ServletException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         if (person.getName() != null && person.getSurname() != null && person.getFathersName()!= null  && person.getPassword() != null){
             if (request.getParameter("buttonSubmit") != null){
@@ -54,8 +60,10 @@ public class AddPersonServlet extends HttpServlet {
 
     protected void checkMatch(HttpServletRequest request, HttpServletResponse response){
         LOGGER.info("Method checkMatch started");
+
         Person person = new Person(request.getParameter("Name_match"), request.getParameter("Surname_match"), request.getParameter("Fathers_name_match"), request.getParameter("Password_match"));
         try {
+
             if (request.getParameter("buttonSubmit_match") != null && doesThePersonInSet(person)){
                 LOGGER.info("Checking passed successfully");
                 request.getRequestDispatcher("votePage.jsp").include(request, response);
