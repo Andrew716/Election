@@ -7,11 +7,15 @@ public class Person {
     private String name;
     private String surname;
     private String fathersName;
+    private String password;
 
-    public Person(String name, String surname, String fathersName) {
+    public Person(){}
+
+    public Person(String name, String surname, String fathersName, String password) {
         this.name = name;
         this.surname = surname;
         this.fathersName = fathersName;
+        this.password = password;
     }
 
     public String getName() {
@@ -36,5 +40,17 @@ public class Person {
 
     public void setFathersName(String fathersName) {
         this.fathersName = fathersName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String toString(){
+        return name + " " + surname + " " + fathersName + " " + password;
     }
 }

@@ -9,7 +9,6 @@
         <description>Connection Pool</description>
         <res-ref-name>ElectionDataSource</res-ref-name>
         <res-type>javax.sql.DataSource</res-type>
-        <res-auth>andrii</res-auth>
     </resource-ref>
 
     <servlet>

@@ -6,8 +6,12 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -20,7 +24,7 @@ public class DAO {
     private static Connection connection;
 
     static {
-        LOGGER.info("Method getConnection has been started");
+        LOGGER.info("Generating DataSource");
         try {
             InitialContext initialContext = new InitialContext();
             DataSource source = (DataSource) initialContext.lookup("java:/comp/env/ElectionDataSource");
@@ -33,6 +37,55 @@ public class DAO {
         LOGGER.info("DataSource has been generated");
     }
 
+    public static Set<Person> voterSet(){
+        Set<Person> personSet = new HashSet<Person>();
+        Person person = new Person();
+        Statement statement = null;
+        String query = "SELECT * FROM voter";
+        try {
+            statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+            while (resultSet.next()){
+                person.setName(resultSet.getString("name"));
+                person.setSurname(resultSet.getString("surname"));
+                person.setFathersName(resultSet.getString("fathersname"));
+                person.setPassword(resultSet.getString("password"));
+                personSet.add(person);
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Exception in voterSet method. SQLException", e);
+        }
+        return personSet;
+    }
+
+    public static Set<Person> candidateSet(){
+        Set<Person> personSet = new HashSet<Person>();
+        String query = "SELECT * FROM candidate";
+        Person person = new Person();
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+            while (resultSet.next()){
+                person.setName(resultSet.getString("name"));
+                person.setSurname(resultSet.getString("surname"));
+                person.setFathersName(resultSet.getString("fathersname"));
+                person.setPassword(resultSet.getString("password"));
+                personSet.add(person);
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Exception in candidateSet method. SQLException", e);
+        }
+        return personSet;
+    }
+
+    public static void output(Set<Person> personSet){
+        Iterator iterator = personSet.iterator();
+        while (iterator.hasNext()){
+            Person person = (Person) iterator.next();
+            LOGGER.info(person.toString());
+        }
+    }
+
     public static void addPerson(Person person, boolean flagForVoter, boolean flagForCandidate){
         LOGGER.info("Method addPerson has been started");
         Statement statement = null;
@@ -42,14 +95,19 @@ public class DAO {
             LOGGER.log(Level.SEVERE, "Connection failed in method addPerson", e);
         }
         try {
-            String insertQueryForVoter = "INSERT INTO voter VALUES ("+ "'"+ person.getSurname()+"'" + "," +"'"+ person.getName()+ "'"+"," +"'"+ person.getFathersName()+"'" + ")";
-            String insertQueryForCandidate = "INSERT INTO candidate VALUES ("+ "'"+ person.getSurname()+"'" + "," +"'"+ person.getName()+ "'"+"," +"'"+ person.getFathersName()+"'" + ")";
+            String insertQueryForVoter = "INSERT INTO voter VALUES ("+ "'"+ person.getName()+"'" + "," +"'"+ person.getSurname()+ "'"+"," +"'"+ person.getFathersName()+"'" + ","+ "'"+person.getPassword()+"'"+ ")";
+            String insertQueryForCandidate = "INSERT INTO candidate VALUES ("+ "'"+ person.getName()+"'" + "," +"'"+ person.getSurname()+ "'"+"," +"'"+ person.getFathersName()+"'" + ","+ "'"+person.getPassword()+"'"+ ")";
             if (flagForVoter){
                 statement.executeUpdate(insertQueryForVoter);
             }
             if (flagForCandidate){
                 statement.executeUpdate(insertQueryForCandidate);
             }
+            if (flagForCandidate && flagForVoter){
+                statement.execute(insertQueryForCandidate);
+                statement.execute(insertQueryForVoter);
+            }
+            LOGGER.info("Person added successfully");
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Insert failed", e);
         }

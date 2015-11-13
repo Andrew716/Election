@@ -14,24 +14,36 @@
 <body>
 
 <center>
-  <form action="AddPersonServlet" method="post">
+
     <b>Welcome to Election program!</b>
 
-
-    <p></p>
-    <input type="text" name="Surname" >Прізвище<Br>
-    <p></p>
-    <input type="text" name="Name">Ім'я<Br>
-    <p></p>
-    <input type="text" name="Fathers_name">По батькові<Br>
-    <p></p>
-    <input type="checkbox"  name="candidate_checkBox">Я кандидат<Br>
-    <input type="checkbox"  name="voter_checkBox">Я виборець<Br>
-    <p></p>
-    <input type="submit"  name="buttonSubmit">
-
-
+    <div class="virovnyat">
+      <form action="AddPersonServlet" method="post">
+      <p></p>
+      <input type="text" name="Surname" >Surname<Br>
+      <p></p>
+      <input type="text" name="Name">Name<Br>
+      <p></p>
+      <input type="text" name="Fathers_name">Father's name<Br>
+      <p></p>
+      <input type="text" name="Password">Password<Br>
+      <p></p>
+      <input type="text" name="PasswordConfirm">Confirm password<Br>
+      <p></p>
+      <input type="checkbox"  name="candidate_checkBox">I am a candidate<Br>
+      <input type="checkbox"  name="voter_checkBox">I am a voter<Br>
+      <p></p>
+      <input type="submit"  name="buttonSubmit">
   </form>
+
+  <form action="matchPage.jsp" method="post">
+    <input type="submit" name="vote" value="vote">
+  </form>
+    </div>
+
+
+
+
 
 </center>
 
