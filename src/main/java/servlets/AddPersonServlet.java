@@ -54,15 +54,12 @@ public class AddPersonServlet extends HttpServlet {
 
     protected void checkMatch(HttpServletRequest request, HttpServletResponse response){
         LOGGER.info("Method checkMatch started");
-        DAO.output(DAO.voterSet());
         Person person = new Person(request.getParameter("Name_match"), request.getParameter("Surname_match"), request.getParameter("Fathers_name_match"), request.getParameter("Password_match"));
         try {
             if (request.getParameter("buttonSubmit_match") != null && doesThePersonInSet(person)){
                 LOGGER.info("Checking passed successfully");
                 request.getRequestDispatcher("votePage.jsp").include(request, response);
 
-            }else {
-                request.getRequestDispatcher("matchPage.jsp").include(request, response);
             }
         } catch (ServletException e) {
             LOGGER.log(Level.SEVERE, "Exception in checkMatch method. ServletException has been thrown", e);

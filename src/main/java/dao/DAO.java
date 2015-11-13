@@ -9,9 +9,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -39,13 +37,14 @@ public class DAO {
 
     public static Set<Person> voterSet(){
         Set<Person> personSet = new HashSet<Person>();
-        Person person = new Person();
         Statement statement = null;
         String query = "SELECT * FROM voter";
         try {
             statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next()){
+                LOGGER.info("voterSer method is working properly");
+                Person person = new Person();
                 person.setName(resultSet.getString("name"));
                 person.setSurname(resultSet.getString("surname"));
                 person.setFathersName(resultSet.getString("fathersname"));
@@ -61,11 +60,11 @@ public class DAO {
     public static Set<Person> candidateSet(){
         Set<Person> personSet = new HashSet<Person>();
         String query = "SELECT * FROM candidate";
-        Person person = new Person();
         try {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next()){
+                Person person = new Person();
                 person.setName(resultSet.getString("name"));
                 person.setSurname(resultSet.getString("surname"));
                 person.setFathersName(resultSet.getString("fathersname"));
@@ -82,12 +81,11 @@ public class DAO {
         Iterator iterator = personSet.iterator();
         while (iterator.hasNext()){
             Person person = (Person) iterator.next();
-            LOGGER.info(person.toString());
+            LOGGER.info((person.toString()));
         }
     }
 
     public static void addPerson(Person person, boolean flagForVoter, boolean flagForCandidate){
-        LOGGER.info("Method addPerson has been started");
         Statement statement = null;
         try {
             statement = connection.createStatement();
